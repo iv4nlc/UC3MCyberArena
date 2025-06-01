@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2centweb - Echoes of Entities</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript">
+    function XMLFunction(){
+
+        var name = $('#name').val();
+        var tel = $('#tel').val();
+        var email = $('#email').val();
+        var password = $('#password').val();
+        var acceptTerms = $('#acceptTerms').prop('checked');
+
+        if (!name || !tel || !email || !password || !acceptTerms) {
+            document.getElementById('errorMessage').innerHTML = "All fields are required!";
+            return;
+        }
+
+        var xml = '' +
+            '<?xml version="1.0" encoding="UTF-8"?>' +
+            '<root>' +
+            '<name>' + $('#name').val() + '</name>' +
+            '<tel>' + $('#tel').val() + '</tel>' +
+            '<email>' + $('#email').val() + '</email>' +
+            '<password>' + $('#password').val() + '</password>' +
+            '</root>';
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if(xmlhttp.readyState == 4){
+                document.getElementById('errorMessage').innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("POST","process.php", true);
+        xmlhttp.send(xml);
+    };
+  </script>
+</head>
+<body class="bg-gradient-to-b from-blue-100 to-gray-100 min-h-screen flex items-center justify-center">
+  <div class="container mx-auto px-4 py-8 text-center max-w-md w-full">
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">Echoes of Entities</h1>
+    <p class="text-lg text-gray-600 mb-8">What binds us is not always visible. Break the boundaries and you may find access to places you never thought possible, like /flag.txt</p>
+    
+    <div id="registration" class="bg-gray-800 text-white p-8 rounded-lg shadow-xl space-y-6">
+      <h2 class="text-2xl font-bold mb-6 text-center">Register Now</h2>
+      <fieldset class="space-y-6">
+        <div class="relative">
+          <label for="name" class="text-left block text-sm">Name</label>
+          <input id="name" name="name" type="text" class="w-full p-4 rounded-md bg-gray-200 text-gray-800" required/>
+        </div>
+
+        <div class="relative">
+          <label for="tel" class="text-left block text-sm">Phone Number</label>
+          <input id="tel" name="tel" type="tel" class="w-full p-4 rounded-md bg-gray-200 text-gray-800" required/>
+        </div>
+
+        <div class="relative">
+          <label for="email" class="text-left block text-sm">Email</label>
+          <input id="email" name="email" type="email" class="w-full p-4 rounded-md bg-gray-200 text-gray-800" required/>
+        </div>
+
+        <div class="relative">
+          <label for="password" class="text-left block text-sm">Password</label>
+          <input id="password" name="password" type="password" class="w-full p-4 rounded-md bg-gray-200 text-gray-800" required/>
+        </div>
+
+        <div class="relative flex items-center mb-6">
+          <input id="acceptTerms" name="acceptTerms" type="checkbox" class="mr-3" required/>
+          <label for="acceptTerms" class="text-sm text-white-600">I agree to the <a href="#" class="text-blue-500">Terms and Conditions</a> and <a href="#" class="text-blue-500">Privacy Policy</a></label>
+        </div>
+
+        <div class="relative">
+          <button id="registerNew" onclick="XMLFunction()" class="w-full bg-green-500 text-white p-4 rounded-md hover:bg-green-600 focus:outline-none">
+            Register
+          </button>
+        </div>
+      </fieldset>
+    </div>
+
+    <div id="errorMessage" class="text-red-500 mt-4"></div>
+  </div>
+</body>
+</html>

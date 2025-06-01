@@ -1,0 +1,1 @@
+CyberArena is a cybersecurity CTF designed for problem-solvers and tech enthusiasts. Built as a Bachelor's thesis project at UC3M, it features challenges in cryptography, web security, reverse engineering, and more to test and enhance your skills

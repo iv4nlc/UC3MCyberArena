@@ -1,0 +1,53 @@
+services:
+  php:
+    build: .
+    container_name: 2centweb-php
+    ports:
+      - "30000:80"
+    volumes:
+      - ./www:/var/www/html
+    depends_on:
+      - db_mysql
+      - db_mongo
+      - xxe-validator
+    restart: always
+
+  db_mysql:
+    image: mysql:5.7
+    container_name: 2centweb-db-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "xxxxxxxxxxxxxx"
+      MYSQL_DATABASE: "xxxxxxxxxxxx"
+      MYSQL_USER: "xxxxxxxxxxxxxx"
+      MYSQL_PASSWORD: "xxxxxxxxxxxxxx"
+    ports:
+      - "30001:3306"
+    volumes:
+      - 2centweb-db-data:/var/lib/mysql
+    restart: always
+
+  db_mongo:
+    image: mongo:4.4
+    container_name: 2centweb-db-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "xxxx"
+      MONGO_INITDB_ROOT_PASSWORD: "xxxxxxxxxxxxxxxxxxxx"
+      MONGO_INITDB_DATABASE: "xxxxxxxxxxxxxx"
+    ports:
+      - "30002:27017"
+    volumes:
+      - 2centweb-db-mongo-data:/data/db
+    restart: always
+
+  xxe-validator:
+    build: ./xxe-validator
+    container_name: 2centweb-xxe-validator
+    restart: always
+    ports:
+      - "30003:80"
+    volumes:
+      - ./xxe-validator:/var/www/html
+
+volumes:
+  2centweb-db-data:
+  2centweb-db-mongo-data:

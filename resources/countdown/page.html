@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+        #countdown-container {
+            width: 300px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        #countdown {
+            font-size: 3em;
+            display: flex;
+            justify-content: center;
+            color: white; /* not in core and core-beta */
+        }
+
+        #countdown-phase {
+            margin-bottom: 1rem;
+        }
+
+        #countdown > .hour::after,
+        #countdown > .minute::after {
+            content: ":";
+        }
+
+        #countdown span {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <div id="countdown-container">
+        <h3 id="countdown-phase">Starting in...</h3>
+        <div id="countdown">
+            <span class="hour">00</span>
+            <span class="minute">00</span>
+            <span class="second">00</span>
+        </div>
+    </div>
+
+    <div class="container">
+        {{ content | safe }}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+const START = new Date(init.start * 1000);
+const END = new Date(init.end * 1000);
+
+const disp_phase = document.getElementById("countdown-phase");
+const countdown_disp = document.getElementById("countdown");
+
+const disp = {
+    hour: countdown_disp.querySelector(".hour"),
+    minute: countdown_disp.querySelector(".minute"),
+    second: countdown_disp.querySelector(".second"),
+}
+
+let countdown_interval_id = null;
+
+const countdown = () => {
+    const NOW = new Date();
+    let compareTo;
+
+    if (NOW > END) {
+        disp_phase.textContent = "CTF is over! Thanks for participating!";
+        countdown_disp.remove();
+        clearInterval(countdown_interval_id);
+        return;
+    } else if (NOW > START) {
+        disp_phase.textContent = "Ending in...";
+        compareTo = END;
+    } else {
+        disp_phase.textContent = "Starting in...";
+        compareTo = START;
+    }
+
+    const diff = Math.floor((compareTo - NOW) / 1000);
+    disp.hour.textContent = (Math.floor(diff / 3600)).toString().padStart(2, "0");
+    disp.minute.textContent = (Math.floor(diff / 60) % 60).toString().padStart(2, "0");
+    disp.second.textContent = (diff % 60).toString().padStart(2, "0");
+};
+
+countdown();
+countdown_interval_id = setInterval(countdown, 1000);
+</script>
+
+{% endblock %}
